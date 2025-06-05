@@ -9,7 +9,8 @@ using System.Text.RegularExpressions;
 using System.Reflection;
 using UnityEngine;
 using System.Collections.Generic;
-using static MatchManager;
+using static ImmortalPets.Plugin;
+// using static MatchManager;
 
 // Make sure your namespace is the same everywhere
 namespace ImmortalPets
@@ -45,6 +46,33 @@ namespace ImmortalPets
         {
             _cardActive.KillPet = false;
 
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(Globals), nameof(Globals.CreateGameContent))]
+        public static void CreateGameContentPostfix(ref Globals __instance, ref Dictionary<string, CardData> ____CardsSource)
+        {
+            string cardToChange = "twilightslaughter";
+            if (____CardsSource.TryGetValue(cardToChange, out CardData twilightslaughter))
+            {
+                LogDebug($"CreateGameContentPostfix - Preventing twilight slaughter from killing pets");
+                twilightslaughter.KillPet = false;
+                ____CardsSource[cardToChange] = twilightslaughter;
+            }
+            else
+            {
+                LogDebug($"CreateGameContentPostfix - Twilight Slaughter not found in CardsSource");
+            }
+            cardToChange = "twilightslaughtera";
+            if (____CardsSource.TryGetValue(cardToChange, out CardData twilightslaughtera))
+            {
+                LogDebug($"CreateGameContentPostfix - Preventing twilight slaughter from killing pets");
+                twilightslaughtera.KillPet = false;
+                ____CardsSource[cardToChange] = twilightslaughtera;
+            }
+            {
+                LogDebug($"CreateGameContentPostfix - TwilightSlaughterA not found in CardsSource");
+            }
         }
 
     }
