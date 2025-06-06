@@ -1,7 +1,7 @@
 {
-  "name": "Immortal_Petss",
-  "version_number": "1.2.0",
+  "name": "Slaughter_Prevention",
+  "version_number": "1.0.0",
   "website_url": "https://github.com/binbinmods/ImmortalPets",
-  "description": "Allows you to increase the spawning of Scarabs. Defaults to guaranteeing a Jade Scarab in every fight.",
+  "description": "Prevents Lord Hanshek's Twilight Slaughter from killing pets. That is all.",
   "dependencies": ["BepInEx-BepInExPack_AcrossTheObelisk-5.4.23"]
 }

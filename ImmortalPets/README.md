@@ -1,17 +1,6 @@
-# Immortal Pets
+# Slaughter Prevention
 
-Mod adds some configs to increase spawning of Scarabs. By default, it will spawn a Jade Scarab in all valid fights.
-
-This was made for the highscoring community, so will likely break the game in casual play on the default settings.
-
-Made at the request of FLOD
-
-Notes:
-
-- This adds a separate roll for the scarabs, so setting it to 10% will first roll the 10% chance for a scarab, if one doesn't spawn, then the default 7% (or 47/57 with Scaraby/corrupted Scaraby) chance will roll.
-- To customize, press F5 in game and select the ImmortalPets tab
-- I'm not actually sure if this requires Obeliskial Essentials, it shouldn't but better safe than sorry
-- Should work for multiplayer. I believe technically only the host needs it installed, but that can lead to all sorts of other issues when the mods aren't identical across all players.
+A very simple mod that prevents Lord Hanshek's Twilight Slaughter from killing pets. That is all.
 
 **Please let me know if you have any issues**
 

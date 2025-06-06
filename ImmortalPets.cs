@@ -44,6 +44,11 @@ namespace ImmortalPets
             int _cardIterationTotal,
             int _cardSpecialValueGlobal)
         {
+            if (_cardActive == null)
+            {
+                LogDebug($"CastCardActionPrefix - _cardActive is null, skipping patch.");
+                return;
+            }
             _cardActive.KillPet = false;
 
         }
