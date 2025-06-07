@@ -4,8 +4,12 @@ using BepInEx;
 using BepInEx.Logging;
 using BepInEx.Configuration;
 using HarmonyLib;
-// using static Obeliskial_Essentials.Essentials;
+using static Obeliskial_Essentials.Essentials;
+using static Obeliskial_Essentials.CardDescriptionNew;
 using System;
+using System.Runtime.CompilerServices;
+using BepInEx.Bootstrap;
+using System.Collections.Generic;
 
 
 // The Plugin csharp file is used to 
@@ -19,7 +23,7 @@ namespace ImmortalPets
 
     // If you have other dependencies, such as obeliskial content, make sure to include them here.
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
-    // [BepInDependency("com.stiffmeds.obeliskialessentials")] // this is the name of the .dll in the !libs folder.
+    [BepInDependency("com.stiffmeds.obeliskialessentials", BepInDependency.DependencyFlags.SoftDependency)] // this is the name of the .dll in the !libs folder.
     [BepInProcess("AcrossTheObelisk.exe")] //Don't change this
     // [BepInIncompatibility("com.stiffmeds.obeliskialessentials")]
 
@@ -37,6 +41,9 @@ namespace ImmortalPets
         // It automatically creates the appropriate configs.
         public static ConfigEntry<bool> EnableMod { get; set; }
         public static ConfigEntry<bool> EnableDebugging { get; set; }
+
+        public static ConfigEntry<bool> OnlyImmortalPurples { get; set; }
+        public static bool EssentialsInstalled = false;
         public static string debugBase = $"{PluginInfo.PLUGIN_GUID} ";
 
         internal int ModDate = 20250605; //int.Parse(DateTime.Today.ToString("yyyyMMdd"));
@@ -48,23 +55,34 @@ namespace ImmortalPets
             Log = Logger;
             Log.LogInfo($"{PluginInfo.PLUGIN_GUID} {PluginInfo.PLUGIN_VERSION} has loaded!");
 
-            EnableMod = Config.Bind(new ConfigDefinition("StormJavelin", "EnableMod"), true, new ConfigDescription("Enables the mod. If false, the mod will not work then next time you load the game."));
-            EnableDebugging = Config.Bind(new ConfigDefinition("StormJavelin", "EnableDebugging"), true, new ConfigDescription("Enables the debugging"));
+            EnableMod = Config.Bind(new ConfigDefinition(PluginInfo.PLUGIN_NAME, "EnableMod"), true, new ConfigDescription("Enables the mod. If false, the mod will not work then next time you load the game."));
+            EnableDebugging = Config.Bind(new ConfigDefinition(PluginInfo.PLUGIN_NAME, "EnableDebugging"), true, new ConfigDescription("Enables the debugging"));
+            OnlyImmortalPurples = Config.Bind(new ConfigDefinition(PluginInfo.PLUGIN_NAME, "OnlyImmortalPurples"), false, new ConfigDescription("Makes it so that only purple (corrupted) pets are immortal"));
 
             // Log.LogInfo($"{PluginInfo.PLUGIN_GUID} second test (pre-register)");
 
-
+            EssentialsInstalled = Chainloader.PluginInfos.ContainsKey("com.stiffmeds.obeliskialessentials");
+            LogDebug($"EssentialsInstalled - {string.Join(", ", Chainloader.PluginInfos.Keys)} - Is Essentials Installed: {EssentialsInstalled}, Is OnlyPurples Enabled: {OnlyImmortalPurples.Value}");
             // Log.LogInfo($"{PluginInfo.PLUGIN_GUID} Config Values. Spawn: " + GuaranteedSpawn.Value + " Jade: " + OnlySpawnJades.Value + " Percent: " + PercentChanceToSpawn.Value);
 
             // Register with Obeliskial Essentials
-            // RegisterMod(
-            //     _name: PluginInfo.PLUGIN_NAME,
-            //     _author: "binbin",
-            //     _description: "Immortal Pets",
-            //     _version: PluginInfo.PLUGIN_VERSION,
-            //     _date: ModDate,
-            //     _link: @"https://github.com/binbinmods/ImmortalPets"
-            // );
+            if (EssentialsInstalled)
+            {
+                RegisterMod(
+                    _name: PluginInfo.PLUGIN_NAME,
+                    _author: "binbin",
+                    _description: "Slaughter Prevention",
+                    _version: PluginInfo.PLUGIN_VERSION,
+                    _date: ModDate,
+                    _link: @"https://github.com/binbinmods/ImmortalPets"
+                );
+
+                // List<string> pets = ["betty", "champy", "chompy", "chumpy", "asmody", "cuby", "cubyd"];
+                // foreach (string pet in pets)
+                // {
+                //     AddTextToCardDescription("Immortal", TextLocation.ItemBeforeActivation, pet + "rare");
+                // }
+            }
 
             // Log.LogInfo($"{PluginInfo.PLUGIN_GUID} third test (pre patch)");
 
