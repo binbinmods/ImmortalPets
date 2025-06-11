@@ -69,7 +69,7 @@ namespace ImmortalPets
                 return true;
             }
 
-            if (cardPet == null) { return true; }
+            if (cardPet == null || _hero == null) { return true; }
             LogDebug($"Attempting to create pet {cardPet.Id}, replacing {(_hero.Pet.IsNullOrWhiteSpace() ? _hero.Pet : "no pet")}");
             if (cardPet.Id == "tombstone" && (_hero?.Pet?.EndsWith("rare") ?? false))
             {
