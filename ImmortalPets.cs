@@ -54,14 +54,7 @@ namespace ImmortalPets
         [HarmonyPrefix]
         [HarmonyPatch(typeof(MatchManager), nameof(MatchManager.CreatePet))]
 
-        public static bool CreatePet(MatchManager __instance,
-            CardData cardPet,
-            GameObject charGO,
-            Hero _hero,
-            NPC _npc,
-            bool _fromEnchant = false,
-            int _enchantIndex = -1)
-
+        public static bool CreatePet(CardData cardPet, GameObject charGO, Hero _hero, NPC _npc, bool _fromEnchant = false, string _enchantName = "")
         {
             // LogDebug("CreatePet");
             if (!OnlyImmortalPurples.Value)

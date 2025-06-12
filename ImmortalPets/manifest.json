@@ -1,10 +1,10 @@
 {
   "name": "Slaughter_Prevention",
-  "version_number": "1.1.1",
+  "version_number": "1.2.0",
   "website_url": "https://github.com/binbinmods/ImmortalPets",
   "description": "Prevents Lord Hanshek's Twilight Slaughter from killing pets. That is all.",
   "dependencies": [
     "BepInEx-BepInExPack_AcrossTheObelisk-5.4.23",
-    "meds-Obeliskial_Essentials-1.4.8"
+    "meds-Obeliskial_Essentials-1.5.0"
   ]
 }

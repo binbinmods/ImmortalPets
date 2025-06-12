@@ -62,7 +62,7 @@ namespace ImmortalPets
             // Log.LogInfo($"{PluginInfo.PLUGIN_GUID} second test (pre-register)");
 
             EssentialsInstalled = Chainloader.PluginInfos.ContainsKey("com.stiffmeds.obeliskialessentials");
-            LogDebug($"EssentialsInstalled - {string.Join(", ", Chainloader.PluginInfos.Keys)} - Is Essentials Installed: {EssentialsInstalled}, Is OnlyPurples Enabled: {OnlyImmortalPurples.Value}");
+            // LogDebug($"EssentialsInstalled - {string.Join(", ", Chainloader.PluginInfos.Keys)} - Is Essentials Installed: {EssentialsInstalled}, Is OnlyPurples Enabled: {OnlyImmortalPurples.Value}");
             // Log.LogInfo($"{PluginInfo.PLUGIN_GUID} Config Values. Spawn: " + GuaranteedSpawn.Value + " Jade: " + OnlySpawnJades.Value + " Percent: " + PercentChanceToSpawn.Value);
 
             // Register with Obeliskial Essentials
