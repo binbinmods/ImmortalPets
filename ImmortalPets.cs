@@ -30,6 +30,9 @@ namespace ImmortalPets
         //     CardData _cardActive = null) =>
         //     //This is intentionally a stub
         //     throw new NotImplementedException("Reverse patch has not been executed.");
+        public static string ogPet;
+        public static string rarePet;
+
         [HarmonyPrefix]
         [HarmonyPatch(typeof(MatchManager), nameof(MatchManager.DestroyedItemInThisTurn))]
 
@@ -43,9 +46,17 @@ namespace ImmortalPets
             LogDebug("DestroyedItemInThisTurnPrefix");
             Hero targetHero = MatchManager.Instance.GetHero(_charIndex);
             if (targetHero == null) { return true; }
+            bool isPet = Globals.Instance?.GetCardData(_cardId)?.CardType == Enums.CardType.Pet;
+            LogDebug($"DestroyedItemInThisTurnPrefix is deleting pet: {isPet}");
             if (targetHero.Pet?.EndsWith("rare") ?? false)
             {
-                LogDebug("Protecting Pet!");
+                ogPet = _cardId;
+                rarePet = Globals.Instance?.GetCardData(_cardId)?.UpgradesToRare?.Id;
+                if (ogPet.ToLower().StartsWith("harley"))
+                {
+                    rarePet = "harleyrare";
+                }
+                LogDebug($"Protecting Pet! {_cardId}");
                 return false;
             }
             return true;
@@ -54,7 +65,7 @@ namespace ImmortalPets
         [HarmonyPrefix]
         [HarmonyPatch(typeof(MatchManager), nameof(MatchManager.CreatePet))]
 
-        public static bool CreatePet(CardData cardPet, GameObject charGO, Hero _hero, NPC _npc, bool _fromEnchant = false, string _enchantName = "")
+        public static bool CreatePet(CardData cardPet, GameObject charGO, ref Hero _hero, NPC _npc, bool _fromEnchant = false, string _enchantName = "")
         {
             // LogDebug("CreatePet");
             if (!OnlyImmortalPurples.Value)
@@ -63,10 +74,11 @@ namespace ImmortalPets
             }
 
             if (cardPet == null || _hero == null) { return true; }
-            LogDebug($"Attempting to create pet {cardPet.Id}, replacing {(_hero.Pet.IsNullOrWhiteSpace() ? _hero.Pet : "no pet")}");
-            if (cardPet.Id == "tombstone" && (_hero?.Pet?.EndsWith("rare") ?? false))
+            LogDebug($"Attempting to create pet {cardPet?.Id}, replacing {(_hero.Pet.IsNullOrWhiteSpace() ? _hero.Pet : "no pet")}");
+            if (cardPet.Id.StartsWith("tombstone") && (_hero?.Pet?.EndsWith("rare") ?? false))
             {
-                LogDebug("Protecting Pet!");
+                _hero.Pet = ogPet;
+                LogDebug($"Protecting Pet! - ogpet = {ogPet}");
                 return false;
             }
             return true;
@@ -114,7 +126,7 @@ namespace ImmortalPets
         public static void CreateGameContentPostfix(ref Globals __instance, ref Dictionary<string, CardData> ____CardsSource)
         {
             string cardToChange = "twilightslaughter";
-            if (____CardsSource.TryGetValue(cardToChange, out CardData twilightslaughter))
+            if (____CardsSource.TryGetValue(cardToChange, out CardData twilightslaughter) && !OnlyImmortalPurples.Value)
             {
                 LogDebug($"CreateGameContentPostfix - Preventing twilight slaughter from killing pets");
                 twilightslaughter.KillPet = false;
@@ -125,7 +137,7 @@ namespace ImmortalPets
                 LogDebug($"CreateGameContentPostfix - Twilight Slaughter not found in CardsSource");
             }
             cardToChange = "twilightslaughtera";
-            if (____CardsSource.TryGetValue(cardToChange, out CardData twilightslaughtera))
+            if (____CardsSource.TryGetValue(cardToChange, out CardData twilightslaughtera) && !OnlyImmortalPurples.Value)
             {
                 LogDebug($"CreateGameContentPostfix - Preventing twilight slaughter from killing pets");
                 twilightslaughtera.KillPet = false;
@@ -134,7 +146,7 @@ namespace ImmortalPets
             {
                 LogDebug($"CreateGameContentPostfix - TwilightSlaughterA not found in CardsSource");
             }
-            if (EssentialsInstalled && OnlyImmortalPurples.Value)
+            if (EssentialsInstalled || OnlyImmortalPurples.Value)
             {
                 List<string> pets = Globals.Instance.CardListByType[Enums.CardType.Pet];
                 LogDebug($"CreateGameContent - Adding Immortal to pets - {string.Join(", ", pets)}");

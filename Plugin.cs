@@ -60,7 +60,7 @@ namespace ImmortalPets
             OnlyImmortalPurples = Config.Bind(new ConfigDefinition(PluginInfo.PLUGIN_NAME, "OnlyImmortalPurples"), false, new ConfigDescription("Makes it so that only purple (corrupted) pets are immortal"));
 
             // Log.LogInfo($"{PluginInfo.PLUGIN_GUID} second test (pre-register)");
-
+            // OnlyImmortalPurples.Value = true;
             EssentialsInstalled = Chainloader.PluginInfos.ContainsKey("com.stiffmeds.obeliskialessentials");
             // LogDebug($"EssentialsInstalled - {string.Join(", ", Chainloader.PluginInfos.Keys)} - Is Essentials Installed: {EssentialsInstalled}, Is OnlyPurples Enabled: {OnlyImmortalPurples.Value}");
             // Log.LogInfo($"{PluginInfo.PLUGIN_GUID} Config Values. Spawn: " + GuaranteedSpawn.Value + " Jade: " + OnlySpawnJades.Value + " Percent: " + PercentChanceToSpawn.Value);
